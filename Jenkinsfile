@@ -68,7 +68,8 @@ pipeline {
                 branch 'master'
             }
             steps {
-                sh "echo ${POM_DISPLAYNAME} - ${POM_VERSION} - ${POM_GROUPID} - ${POM_ARTIFACTID} - ${POM_PACKAGING} - ${POM_RELATIVEPATH}"
+                sh 'pwd'
+                sh 'ls -lao'
             }
         }
 
