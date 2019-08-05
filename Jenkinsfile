@@ -44,17 +44,42 @@ pipeline {
                 }
             }
         }
-        /*
-        stage('Deploy approval') {
+
+        stage('Deploy approval for test') {
+            when {
+                branch 'test-branch'
+            }
+            steps {
+                input "Deploy to test?"
+            }
+        }
+      
+        stage('Deploy approval for master') {
+            when {
+                branch 'master'
+            }
             steps {
                 input "Deploy to prod?"
             }
         }
-        */
-        stage('Deploying') {
+       
+        stage('Deploying m') {
+            when {
+                branch 'master'
+            }
             steps {
                 sh "echo ${buildInfo}"
             }
         }
+
+        stage('Deploying t') {
+            when {
+                branch 'test-branch'
+            }
+            steps {
+                sh "echo ${buildInfo}"
+            }
+        }
+
     }
 }
