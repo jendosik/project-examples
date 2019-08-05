@@ -10,7 +10,7 @@ pipeline {
         BUILD_NUM_ENV = currentBuild.getNumber()
         ANOTHER_ENV = "${currentBuild.getNumber()}"
         INHERITED_ENV = "\${BUILD_NUM_ENV} is inherited"
-        ACME_FUNC = pom.artifactid()
+        ACME_FUNC = pom.artifactId()
   }
     agent {
         docker {
