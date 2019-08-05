@@ -10,7 +10,7 @@ pipeline {
         BUILD_NUM_ENV = currentBuild.getNumber()
         ANOTHER_ENV = "${currentBuild.getNumber()}"
         INHERITED_ENV = "\${BUILD_NUM_ENV} is inherited"
-        ACME_FUNC = pom.artifactId()
+        ACME_FUNC = pom.getArtifactId()
   }
     agent {
         docker {
@@ -100,7 +100,7 @@ pipeline {
                     def pom = readMavenPom file: 'maven-example/pom.xml'
                     
                     print pom.version
-                    print pom.artifactid
+                    print pom.getArtifactId()
                     sh 'pwd'
                     sh 'ls -la ./'
                 }
