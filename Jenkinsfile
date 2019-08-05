@@ -2,6 +2,8 @@ def server = Artifactory.newServer url: 'http://172.17.0.3:8081/artifactory', cr
 def rtMaven = Artifactory.newMavenBuild()
 def buildInfo
 
+
+
 pipeline {
     agent {
         docker {
