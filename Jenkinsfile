@@ -9,7 +9,6 @@ pipeline {
             args '--mount "type=bind,source=/var/run/docker.sock,destination=/var/run/docker.sock" -u 0:0 --dns 192.168.17.1'
         }
     }
-    def pom = readMavenPom file: 'pom.xml'
     /*
     environment {
         M_IMAGE = readMavenPom().getArtifactId()
@@ -76,9 +75,14 @@ pipeline {
                 branch 'master'
             }
             steps {
-                sh 'pwd'
-                sh 'ls -la ./'
-                sh "echo $M_IMAGE $M_VERSION $M_PATH"
+                script {
+                    def pom = readMavenPom file: 'pom.xml'
+                    
+                    print pom.version
+                    print pom.artifactid
+                    sh 'pwd'
+                    sh 'ls -la ./'
+                }
             }
         }
 
