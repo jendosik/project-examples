@@ -9,12 +9,14 @@ pipeline {
             args '--mount "type=bind,source=/var/run/docker.sock,destination=/var/run/docker.sock" -u 0:0 --dns 192.168.17.1'
         }
     }
+    def pom = readMavenPom file: 'pom.xml'
+    /*
     environment {
         M_IMAGE = readMavenPom().getArtifactId()
         M_VERSION = readMavenPom().getVersion()
         M_PATH = readMavenPom().getPackaging()
-        
     }
+    */
     stages {
         stage ('Link java') {
             steps {
