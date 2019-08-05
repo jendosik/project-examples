@@ -38,10 +38,12 @@ pipeline {
             // returns 'ACME_FUNC is spring-petclinic' or the name of the artifact in the pom.xml
           }
       }
-        stage ('Link java') {
+        stage ('Link java and change maven workdir') {
             steps {
                 script {
+                    sh 'mv /root/.m2/settings-docker.xml /root/.m2/settings.xml'
                     sh 'ln -s /usr/lib/jvm/java-1.8-openjdk /usr/local/openjdk-8'
+                    
                 }
             }
         }
@@ -103,6 +105,7 @@ pipeline {
                     print pom.getArtifactId()
                     sh 'pwd'
                     sh 'ls -la ./'
+                    sh '[ -d "/var/jenkins_home/workspace/artifactory_test/maven-example/multi2/target" ] && ls -lah "/var/jenkins_home/workspace/artifactory_test/maven-example/multi2/target"'
                 }
             }
         }
