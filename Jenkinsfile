@@ -4,11 +4,13 @@ def buildInfo
 
 pipeline {
     environment {
+        def pom = readMavenPom file: 'maven-example/pom.xml'
+
         FOO = "BAR"
         BUILD_NUM_ENV = currentBuild.getNumber()
         ANOTHER_ENV = "${currentBuild.getNumber()}"
         INHERITED_ENV = "\${BUILD_NUM_ENV} is inherited"
-        ACME_FUNC = readMavenPom().getArtifactId()
+        ACME_FUNC = pom.artifactid()
   }
     agent {
         docker {
@@ -95,7 +97,7 @@ pipeline {
             }
             steps {
                 script {
-                    def pom = readMavenPom file: 'pom.xml'
+                    def pom = readMavenPom file: 'maven-example/pom.xml'
                     
                     print pom.version
                     print pom.artifactid
