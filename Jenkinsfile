@@ -15,8 +15,6 @@ pipeline {
         M_PATH = readMavenPom().getPackaging()
         
     }
-
-    }
     stages {
         stage ('Link java') {
             steps {
