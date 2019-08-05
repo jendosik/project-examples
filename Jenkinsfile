@@ -69,7 +69,7 @@ pipeline {
             }
             steps {
                 sh 'pwd'
-                sh 'ls -lao'
+                sh 'ls -la ./'
             }
         }
 
