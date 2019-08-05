@@ -9,6 +9,14 @@ pipeline {
             args '--mount "type=bind,source=/var/run/docker.sock,destination=/var/run/docker.sock" -u 0:0 --dns 192.168.17.1'
         }
     }
+    environment {
+        M_IMAGE = readMavenPom().getArtifactId()
+        M_VERSION = readMavenPom().getVersion()
+        M_PATH = readMavenPom().getPackaging()
+        
+    }
+
+    }
     stages {
         stage ('Link java') {
             steps {
@@ -70,6 +78,7 @@ pipeline {
             steps {
                 sh 'pwd'
                 sh 'ls -la ./'
+                sh "echo $M_IMAGE $M_VERSION $M_PATH"
             }
         }
 
