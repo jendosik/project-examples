@@ -11,6 +11,7 @@ pipeline {
         ANOTHER_ENV = "${currentBuild.getNumber()}"
         INHERITED_ENV = "\${BUILD_NUM_ENV} is inherited"
         ACME_FUNC = pom.getArtifactId()
+        ACME_VERS = pom.getVersion()
   }
     agent {
         docker {
@@ -93,7 +94,7 @@ pipeline {
             }
         }
        
-        stage('Deploying m') {
+        stage('Prepare deployment environment') {
             when {
                 branch 'master'
             }
@@ -114,6 +115,30 @@ pipeline {
                     
                     sh 'docker ps -a && docker images -a && docker info'
                  }
+            }
+        }
+                
+         stage('Deploy to production') {
+
+             when {
+                branch 'master'
+            }
+
+            environment {
+                def pom = readMavenPom file: 'maven-example/pom.xml'
+
+                BUILD_NUM_ENV = currentBuild.getNumber()
+                ART_ID = pom.getArtifactId()
+                VER = pom.version
+                GIT_COMMIT = sh(returnStdout: true, script: "git log -n 1 --pretty=format:'%h'").trim()
+                IMAGE = "registry2.mikronfs.ru:5000/test/maventest/${VER}-${BUILD_NUM_ENV}:${GIT_COMMIT}"
+            }
+            steps {
+                withCredentials([usernamePassword(credentialsId: 'docker_registry', passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
+                    sh 'docker login -u ${USERNAME} -p ${PASSWORD} https://registry2.mikronfs.ru:5000'
+                }
+                sh 'docker build -t ${IMAGE} .'
+                sh 'docker push ${IMAGE}'
             }
         }
 
