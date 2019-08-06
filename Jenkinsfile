@@ -1,4 +1,4 @@
-def server = Artifactory.newServer url: 'http://172.17.0.3:8081/artifactory', credentialsId: 'mike_artifactory'
+def server = Artifactory.newServer url: 'http://172.17.0.4:8081/artifactory', credentialsId: 'mike_artifactory'
 def rtMaven = Artifactory.newMavenBuild()
 def buildInfo
 
@@ -100,13 +100,20 @@ pipeline {
             steps {
                 script {
                     def pom = readMavenPom file: 'maven-example/pom.xml'
-                    
+                 
                     print pom.version
                     print pom.getArtifactId()
                     sh 'pwd'
                     sh 'ls -la ./'
-                    sh '[ -d "/var/jenkins_home/workspace/artifactory_test/maven-example/multi2/target" ] && ls -lah "/var/jenkins_home/workspace/artifactory_test/maven-example/multi2/target"'
-                }
+                    sh '[ -d "/var/jenkins_home/workspace/artifactory_test/maven-example/multi2/target" ] && \
+                        ls -lah "/var/jenkins_home/workspace/artifactory_test/maven-example/multi2/target"'
+                    sh 'echo http://dl-cdn.alpinelinux.org/alpine/edge/community >> /etc/apk/repositories && \
+                        apk update && \
+                        apk upgrade && \
+                        apk add --no-cache bash git openssh curl "docker=17.05.0-r0"'
+                    
+                    sh 'docker ps -a && docker images -a && docker info'
+                 }
             }
         }
 
