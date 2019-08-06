@@ -129,7 +129,7 @@ pipeline {
 
                 BUILD_NUM_ENV = currentBuild.getNumber()
                 ART_ID = pom.getArtifactId()
-                VER = pom.version
+                VER = pom.getVersion()
                 GIT_COMMIT = sh(returnStdout: true, script: "git log -n 1 --pretty=format:'%h'").trim()
                 IMAGE = "registry2.mikronfs.ru:5000/test/maventest/${VER}-${BUILD_NUM_ENV}:${GIT_COMMIT}"
             }
