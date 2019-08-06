@@ -38,6 +38,6 @@ COPY settings-docker.xml /usr/share/maven/ref/
 COPY maven-example/multi2/target/*.jar /jars/
 
 
-ENTRYPOINT ["/usr/local/bin/mvn-entrypoint.sh"]
+ENTRYPOINT ["/bin/bash"]
 
 CMD ["mvn"]
