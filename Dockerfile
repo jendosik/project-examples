@@ -23,15 +23,12 @@ RUN mkdir -p /usr/share/maven /usr/share/maven/ref /jars \
   && ln -s /usr/share/maven/bin/mvn /usr/bin/mvn
 
 
-
 ENV MAVEN_HOME /usr/share/maven
 
 ENV MAVEN_CONFIG "$USER_HOME_DIR/.m2"
 
-
 COPY maven-example/multi2/target/*.jar /jars/
-
 
 ENTRYPOINT ["/bin/bash"]
 
-CMD ["mvn"]
+CMD ["mvn --version"]
