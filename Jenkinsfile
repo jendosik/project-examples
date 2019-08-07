@@ -131,7 +131,8 @@ pipeline {
                 ART_ID = pom.getArtifactId()
                 VER = pom.getVersion().toLowerCase()
                 GIT_COMMIT = sh(returnStdout: true, script: "git log -n 1 --pretty=format:'%h'").trim()
-                IMAGE = "registry2.mikronfs.ru:5000/test/maventest/${VER}-${BUILD_NUM_ENV}:${GIT_COMMIT}"
+                //IMAGE = "registry2.mikronfs.ru:5000/test/maventest/${VER}-${BUILD_NUM_ENV}:${GIT_COMMIT}"
+                IMAGE = "registry2.mikronfs.ru:5000/test/maventest/${VER}:${BUILD_NUM_ENV}-${GIT_COMMIT}"
             }
             steps {
                 withCredentials([usernamePassword(credentialsId: 'docker_registry', passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
