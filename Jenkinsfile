@@ -5,7 +5,6 @@ def buildInfo
 pipeline {
     environment {
         def pom = readMavenPom file: 'maven-example/pom.xml'
-
         FOO = "BAR"
         BUILD_NUM_ENV = currentBuild.getNumber()
         ANOTHER_ENV = "${currentBuild.getNumber()}"
