@@ -1,4 +1,4 @@
-def server = Artifactory.newServer url: 'http://172.17.0.4:8081/artifactory', credentialsId: 'mike_artifactory'
+def server = Artifactory.newServer url: 'http://172.17.0.3:8081/artifactory', credentialsId: 'mike_artifactory'
 def rtMaven = Artifactory.newMavenBuild()
 def buildInfo
 
