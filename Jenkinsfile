@@ -135,12 +135,10 @@ pipeline {
                 //IMAGE = "registry2.mikronfs.ru:5000/test/maventest/${VER}:${BUILD_NUM_ENV}-${GIT_COMMIT}"
                 IMAGE = "registry.mikronfs.ru:5000/test/maventest/${VER}:${BUILD_NUM_ENV}-${GIT_COMMIT}"
             }
-            }
             steps {
                 withCredentials([usernamePassword(credentialsId: 'docker_registry', passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
                     //sh 'docker login -u ${USERNAME} -p ${PASSWORD} https://registry2.mikronfs.ru:5000'
                     sh 'docker login -u ${USERNAME} -p ${PASSWORD} https://registry.mikronfs.ru:5000'
-                }
                 }
                 sh 'docker build -t ${IMAGE} .'
                 sh 'docker push ${IMAGE}'
