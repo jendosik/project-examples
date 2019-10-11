@@ -1,4 +1,5 @@
-def server = Artifactory.newServer url: 'http://172.17.0.3:8081/artifactory', credentialsId: 'mike_artifactory'
+//def server = Artifactory.newServer url: 'http://172.17.0.3:8081/artifactory', credentialsId: 'mike_artifactory'
+def server = Artifactory.newServer url: 'http://172.17.0.4:8081/artifactory', credentialsId: 'mike_artifactory'
 def rtMaven = Artifactory.newMavenBuild()
 def buildInfo
 
@@ -131,11 +132,15 @@ pipeline {
                 VER = pom.getVersion().toLowerCase()
                 GIT_COMMIT = sh(returnStdout: true, script: "git log -n 1 --pretty=format:'%h'").trim()
                 //IMAGE = "registry2.mikronfs.ru:5000/test/maventest/${VER}-${BUILD_NUM_ENV}:${GIT_COMMIT}"
-                IMAGE = "registry2.mikronfs.ru:5000/test/maventest/${VER}:${BUILD_NUM_ENV}-${GIT_COMMIT}"
+                //IMAGE = "registry2.mikronfs.ru:5000/test/maventest/${VER}:${BUILD_NUM_ENV}-${GIT_COMMIT}"
+                IMAGE = "registry.mikronfs.ru:5000/test/maventest/${VER}:${BUILD_NUM_ENV}-${GIT_COMMIT}"
+            }
             }
             steps {
                 withCredentials([usernamePassword(credentialsId: 'docker_registry', passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME')]) {
-                    sh 'docker login -u ${USERNAME} -p ${PASSWORD} https://registry2.mikronfs.ru:5000'
+                    //sh 'docker login -u ${USERNAME} -p ${PASSWORD} https://registry2.mikronfs.ru:5000'
+                    sh 'docker login -u ${USERNAME} -p ${PASSWORD} https://registry.mikronfs.ru:5000'
+                }
                 }
                 sh 'docker build -t ${IMAGE} .'
                 sh 'docker push ${IMAGE}'
