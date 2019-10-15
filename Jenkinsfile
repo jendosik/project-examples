@@ -2,6 +2,7 @@
 def server = Artifactory.newServer url: 'http://172.17.0.4:8081/artifactory', credentialsId: 'mike_artifactory'
 def rtMaven = Artifactory.newMavenBuild()
 def buildInfo
+def remote = [:]
 
 pipeline {
     environment {
@@ -87,8 +88,6 @@ pipeline {
                 }
                 steps {
                     script {
-                        def remote = [:]
-
                         remote.name = "gate"
                         remote.host = "192.168.17.1"
                         remote.port = "3738"
