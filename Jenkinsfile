@@ -81,13 +81,14 @@ pipeline {
         }
 
         stage ('SSH test case') {
-            
+
+                def remote = [:]
+                remote.name = "gate"
+                remote.host = "192.168.17.1"
+                remote.port = "3738"
+                remote.allowAnyHosts = true
+
                 environment {
-                    def remote = [:]
-                    remote.name = "gate"
-                    remote.host = "192.168.17.1"
-                    remote.port = "3738"
-                    remote.allowAnyHosts = true
                     SSH_CREDS = credentials('gate_ssh_mike')
                     //remote.user = "${env.SSH_CREDS_USR}"
                     //remote.password = "${env.SSH_CREDS_PSW}"
