@@ -89,8 +89,8 @@ pipeline {
             
                 environment {
                     SSH_CREDS = credentials('gate_ssh_mike')
-                    remote.user = ${env.SSH_CREDS_USR}
-                    remote.password = ${env.SSH_CREDS_PSW}
+                    remote.user = "${env.SSH_CREDS_USR}"
+                    remote.password = "${env.SSH_CREDS_PSW}"
                 }
                 steps {
                         sh 'printenv'
