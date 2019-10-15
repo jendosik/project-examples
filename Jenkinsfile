@@ -2,7 +2,6 @@
 def server = Artifactory.newServer url: 'http://172.17.0.4:8081/artifactory', credentialsId: 'mike_artifactory'
 def rtMaven = Artifactory.newMavenBuild()
 def buildInfo
-def remote = [:]
 
 pipeline {
     environment {
@@ -85,14 +84,18 @@ pipeline {
 
                 environment {
                     SSH_CREDS = credentials('gate_ssh_mike')
-                    remote['name'] = "gate"
-                    remote['host'] = "192.168.17.1"
-                    remote['port'] = "3738"
-                    remote['allowAnyHosts'] = true
-                    remote['user'] = "${env.SSH_CREDS_USR}"
-                    remote['password'] = "${env.SSH_CREDS_PSW}"
                 }
                 steps {
+                    script {
+                        def remote = [:]
+
+                        remote.name = "gate"
+                        remote.host = "192.168.17.1"
+                        remote.port = "3738"
+                        remote.allowAnyHosts = true
+                        remote.user = "${env.SSH_CREDS_USR}"
+                        remote.password = "${env.SSH_CREDS_PSW}"
+
                         sh 'printenv'
                         writeFile file: 'test.sh', text: 'ls'
                         sshCommand remote: remote, command: 'for i in {1..5}; do echo -n \"Loop \$i \"; date ; sleep 1; done'
@@ -100,6 +103,7 @@ pipeline {
                         sshPut remote: remote, from: 'test.sh', into: '.'
                         sshGet remote: remote, from: 'test.sh', into: 'test_new.sh', override: true
                         sshRemove remote: remote, path: 'test.sh'
+                    }
                 }
         }
          
