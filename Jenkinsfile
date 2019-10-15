@@ -88,12 +88,12 @@ pipeline {
         stage ('SSH test case') {
             
                 environment {
-                    withCredentials([usernamePassword(credentialsId: 'gate_ssh_mike', passwordVariable: 'password', usernameVariable: 'userName')]) {
-                        remote.user = userName
-                        remote.password = password
-                    }
+                    SSH_CREDS = credentials('gate_ssh_mike')
+                    remote.user = ${env.SSH_CREDS_USR}
+                    remote.password = ${env.SSH_CREDS_PSW}
                 }
                 steps {
+                        sh 'printenv'
                         writeFile file: 'test.sh', text: 'ls'
                         sshCommand remote: remote, command: 'for i in {1..5}; do echo -n \"Loop \$i \"; date ; sleep 1; done'
                         sshScript remote: remote, script: 'test.sh'
