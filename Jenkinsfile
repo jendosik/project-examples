@@ -88,9 +88,10 @@ pipeline {
         stage ('SSH test case') {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'gate_ssh_mike', passwordVariable: 'password', usernameVariable: 'userName')]) {
-                    remote.user = userName
-                    remote.password = password
-
+                    environment {
+                        remote.user = userName
+                        remote.password = password
+                    }
                     stage("SSH Steps Rocks!") {
                         writeFile file: 'test.sh', text: 'ls'
                         sshCommand remote: remote, command: 'for i in {1..5}; do echo -n \"Loop \$i \"; date ; sleep 1; done'
