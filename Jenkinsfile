@@ -3,6 +3,10 @@ def server = Artifactory.newServer url: 'http://172.17.0.4:8081/artifactory', cr
 def rtMaven = Artifactory.newMavenBuild()
 def buildInfo
 def remote = [:]
+remote.name = "gate"
+remote.host = "192.168.17.1"
+remote.port = "3738"
+remote.allowAnyHosts = true
 
 pipeline {
     environment {
@@ -82,13 +86,6 @@ pipeline {
         }
 
         stage ('SSH test case') {
-            environment {
-                remote.name = "gate"
-                remote.host = "192.168.17.1"
-                remote.port = "3738"
-                remote.allowAnyHosts = true
-            }
-
             steps {
                 withCredentials([usernamePassword(credentialsId: 'gate_ssh_mike', passwordVariable: 'password', usernameVariable: 'userName')]) {
                     remote.user = userName
