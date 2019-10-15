@@ -20,6 +20,7 @@ pipeline {
             args '--mount "type=bind,source=/var/run/docker.sock,destination=/var/run/docker.sock" -u 0:0 --dns 192.168.17.1'
         }
     }
+    options { timeout(time: 3, unit: 'HOURS') }
     
      stages {
       stage("Environment") {
