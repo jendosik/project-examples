@@ -23,6 +23,9 @@ pipeline {
      stages {
       stage("Environment") {
           steps {
+            // print whole ENV
+            sh 'printenv'
+              
             sh 'echo "FOO is $FOO"'
             // returns 'FOO is BAR'
 
